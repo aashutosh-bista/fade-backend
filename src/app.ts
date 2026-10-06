@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { apiLimiter } from "./middlewares/rateLimitter.middleware.js";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
 import healthRoutes from "./routes/health.route.js";
+import authRoutes from "./routes/auth.route.js";
 const app = express();
 app.set("trust proxy", 1);
 app.use(
@@ -12,7 +13,7 @@ app.use(
   }),
 );
 app.use(helmet());
-app.use('/health',healthRoutes)
+app.use("/health", healthRoutes);
 app.use(apiLimiter);
 app.use(express.json({ limit: "10kb" }));
 
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
     message: "Backend is running",
   });
 });
+app.use("/api/auth", authRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
