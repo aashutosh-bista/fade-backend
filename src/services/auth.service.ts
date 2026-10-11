@@ -1,8 +1,7 @@
 import type { SignUpInput, LoginInput } from "../validators/auth.validator.js";
 import { signToken } from "../utils/token.js";
 import { User } from "../models/user.model.js";
-import { DUMMY_HASH } from "../utils/password.js";
-import { comparePassword, passwordHasher } from "../utils/password.js";
+import { comparePassword, DUMMY_HASH, passwordHasher } from "../utils/password.js";
 import { ApiError } from "../utils/apiError.js";
 
 const toSafeUser = (user: {
@@ -24,7 +23,7 @@ export const signUpService = async (data: SignUpInput) => {
     email: data.email,
     passwordHash: hashedPassword,
   });
-  toSafeUser(user);
+  return toSafeUser(user);
 };
 
 export const loginService = async (data: LoginInput) => {
@@ -38,6 +37,9 @@ export const loginService = async (data: LoginInput) => {
   if (!user || !isMatch) {
     throw new ApiError(401, "Invalid credentials");
   }
+  if (!user || !isMatch || user.role !== "admin") {
+  throw new ApiError(401, "Invalid credentials");
+}
   const token = signToken(user.id, user.role);
   return { token, user: toSafeUser(user) };
 };
