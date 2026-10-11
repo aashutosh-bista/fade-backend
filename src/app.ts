@@ -22,7 +22,13 @@ app.get("/", (req, res) => {
     message: "Backend is running",
   });
 });
+
 app.use("/api/auth", authRoutes);
+import memberRoutes from "./routes/member.route.js";
+import bookingRoutes from "./routes/booking.route.js";
+
+app.use("/api/members", memberRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
