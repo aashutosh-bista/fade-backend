@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const BRANCHES = ["branch1", "branch2"] as const; // replace with the real branch names
+export const BRANCHES = ["Baneshwor", "Kausaltar"] as const; // replace with the real branch names
 
 const bookingSchema = new mongoose.Schema(
   {
